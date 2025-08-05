@@ -32,7 +32,7 @@ Project Structure.......
 
 
 
-1\. Prerequisites
+1. Prerequisites
 
 
 
@@ -62,15 +62,15 @@ Build your custom NGINX image using - 'docker build -t xops-web:custom .'
 
 
 
-4\. Load Image into kind using - 'kind load docker-image xops-web:custom --name xops-cluster'
+4. Load Image into kind using - 'kind load docker-image xops-web:custom --name xops-cluster'
 
 
 
-5\. Apply the Kubernetes YAML using - 'kubectl apply -f app.yaml'
+5. Apply the Kubernetes YAML using - 'kubectl apply -f app.yaml'
 
 
 
-6\. Verify Deployment using - 'kubectl get pods' \& 'kubectl get svc'
+6. Verify Deployment using - 'kubectl get pods' \& 'kubectl get svc'
 
 
 
@@ -81,7 +81,7 @@ NAME        TYPE       CLUSTER-IP     PORT(S)        AGE
 xops-web     NodePort    10.96.46.213   <none>        80:30007/TCP   28s
 
 
-7\. To access the app
+7. To access the app
 
 Forward service port (optional for local test) using - 'kubectl port-forward svc/xops-web 8080:80'
 
@@ -114,28 +114,29 @@ kubectl describe node
 
 
 
-\*Explained Kubernetes Components:
+*Explained Kubernetes Components:
 
-Master components              |         Slave Components
+(a) Master components:
 
+ =>etcd                                          
 
+ =>API server                                      
 
->etcd                                    |       >Kubelet 
+ =>Scheduler                                
 
->API server                         |       >Kube-Proxy
+ =>Controller Manager
 
->Scheduler
->Controller Manager
+ (b) Slave Components:
 
+ =>Kubelet
+ 
+ =>Kube-Proxy
 
+Explaination:
 
 =>etcd: It is a highly available distributed key value store, which is used to store cluster wide secrets.
 
 It is only accessible by Kubernetes API server, as it has sensitive information.
-
-
-
-
 
 =>API Server: API Server exposes the Kubernetes API. The Kubernetes API is the front-end for
 
@@ -150,38 +151,26 @@ Management and manages present and future events on the cluster .
 
 
 => Controller Manager: The controller manager, runs all the controllers on the Kubernetes Cluster.
-
 Although each controller, is a separate process, but to reduce complexity,all the controllers are compiled into a single process.
-
 They are as follows:
-
 Node Controller, Replication Controller, Endpoints Controller, Service Accounts and Token Controllers.
 
 
 =>Kubelet: Kubelet takes the specification from the API server, and ensures the application is running according to the
-
 specifications which were mentioned. Each node has it’s kubelet service.
 
 
 
 => Kube-Proxy: This proxy service runs on each node and helps in making services available to the external host.
-
 It helps in connection forwarding to the correct resources, it is also capable of doing primitive load balancing.
 
 
 
 ---
 
-
-
-\#Clean Up using:
-
-
+#Clean Up using:
 
 'kind delete cluster --name xops-cluster'
-
-
-
 
 
 Author:
